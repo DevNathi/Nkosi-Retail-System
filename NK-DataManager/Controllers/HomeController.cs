@@ -10,7 +10,7 @@ namespace NK_DataManager.Controllers
     {
         public ActionResult Index()
         {
-            ViewBag.Title = "Home Page";
+            ViewBag.Title = "Home or something";
 
             return View();
         }
