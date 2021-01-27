@@ -1,4 +1,5 @@
 ﻿using Caliburn.Micro;
+using NK_DesktopUI.Helpers;
 using NK_DesktopUI.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -6,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
 
 namespace NK_DesktopUI
 {
@@ -16,6 +18,11 @@ namespace NK_DesktopUI
         public Bootstrapper()
         {
             Initialize();
+
+            ConventionManager.AddElementConvention<PasswordBox>(
+           PasswordBoxHelper.BoundPasswordProperty,
+           "Password",
+           "PasswordChanged");
         }
 
         protected override void Configure()
