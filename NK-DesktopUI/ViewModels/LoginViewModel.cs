@@ -1,4 +1,5 @@
 ﻿using Caliburn.Micro;
+using NK_DesktopUI.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,6 +12,12 @@ namespace NK_DesktopUI.ViewModels
     {
         private string _useName;
         private string _password;
+        private IAPIHelper _apiHelper;
+
+        public LoginViewModel(IAPIHelper apiHelper)
+        {
+            _apiHelper = apiHelper;
+        }
 
         public string UserName
         {
@@ -51,9 +58,18 @@ namespace NK_DesktopUI.ViewModels
         }
 
 
-        public void Login(string userName, string password)
+        public async Task Login()
         {
-            Console.WriteLine();
+            try 
+            {
+                var result = await _apiHelper.Authenticate(UserName, Password);
+            }
+            catch (Exception ex)
+            {
+
+                Console.WriteLine(ex.Message);
+            }
+
         }
 
     }

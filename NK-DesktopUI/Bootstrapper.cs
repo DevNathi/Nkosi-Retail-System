@@ -31,7 +31,9 @@ namespace NK_DesktopUI
 
             _container
                 .Singleton<IWindowManager, WindowManager>()
-                .Singleton<IEventAggregator, EventAggregator>();
+                .Singleton<IEventAggregator, EventAggregator>()
+                .Singleton<IAPIHelper, APIHelper>();
+                
 
             //This is where we specify how we select our Types of Instances
             GetType().Assembly.GetTypes()
