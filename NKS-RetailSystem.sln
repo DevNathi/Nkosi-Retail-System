@@ -9,6 +9,8 @@ Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "NK-Data", "NK-Data\NK-Data.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NK-DesktopUI", "NK-DesktopUI\NK-DesktopUI.csproj", "{9FF5EA66-14D6-4E52-83C2-CE8FF488E02C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NK-DataManagerLibrary", "NK-DataManagerLibrary\NK-DataManagerLibrary.csproj", "{8E078502-E530-4C17-B2BC-C506150F3C7A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -29,6 +31,10 @@ Global
 		{9FF5EA66-14D6-4E52-83C2-CE8FF488E02C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9FF5EA66-14D6-4E52-83C2-CE8FF488E02C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9FF5EA66-14D6-4E52-83C2-CE8FF488E02C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8E078502-E530-4C17-B2BC-C506150F3C7A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8E078502-E530-4C17-B2BC-C506150F3C7A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8E078502-E530-4C17-B2BC-C506150F3C7A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8E078502-E530-4C17-B2BC-C506150F3C7A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
