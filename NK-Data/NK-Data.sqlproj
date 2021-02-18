@@ -64,6 +64,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="PublishLocations\NK-Data.publish.xml" />
+    <None Include="NK-Data.publish.xml" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="dbo\Tables\User.sql" />
@@ -72,6 +73,22 @@
     <Build Include="dbo\Tables\Product.sql" />
     <Build Include="dbo\Tables\Inventory.sql" />
     <Build Include="dbo\Stored Procedures\spUserLookUp.sql" />
+    <Build Include="dbo\Stored Procedures\spProductLookUp.sql" />
+    <Build Include="dbo\Stored Procedures\spSaleInsert.sql" />
+    <Build Include="dbo\Stored Procedures\spSaleDetailsInsert.sql" />
+    <Build Include="dbo\Stored Procedures\spProductInsert.sql" />
+    <Build Include="dbo\Stored Procedures\spInventoryInsert.sql" />
+    <Build Include="dbo\Stored Procedures\spInventoryLookUp.sql" />
+    <Build Include="dbo\Stored Procedures\spSaleLookUp.sql" />
+    <Build Include="dbo\Stored Procedures\spSaleDetailsLookUp.sql" />
+    <Build Include="dbo\Stored Procedures\spProductsLookUp.sql" />
+    <Build Include="dbo\Stored Procedures\spSalesLookUp.sql" />
+    <Build Include="dbo\Stored Procedures\spInventoriesLookUp.sql" />
+    <Build Include="dbo\Stored Procedures\spRemoveProduct.sql" />
+    <Build Include="dbo\Stored Procedures\spRemoveInventory.sql" />
+    <Build Include="dbo\Stored Procedures\spProductRemove.sql" />
+    <Build Include="spSaleRemove.sql" />
+    <Build Include="dbo\Stored Procedures\spSalesDetailsLookUp.sql" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="NK-Data.refactorlog" />
