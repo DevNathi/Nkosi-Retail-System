@@ -1,6 +1,8 @@
 ﻿using Caliburn.Micro;
 using NK_DesktopUI.Helpers;
 using NK_DesktopUI.ViewModels;
+using NK_DesktopUI_Library.Api;
+using NK_DesktopUI_Library.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -32,6 +34,7 @@ namespace NK_DesktopUI
             _container
                 .Singleton<IWindowManager, WindowManager>()
                 .Singleton<IEventAggregator, EventAggregator>()
+                .Singleton<LoggedInUserModel>()
                 .Singleton<IAPIHelper, APIHelper>();
                 
 

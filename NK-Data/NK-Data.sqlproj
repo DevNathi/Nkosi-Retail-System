@@ -87,8 +87,8 @@
     <Build Include="dbo\Stored Procedures\spRemoveProduct.sql" />
     <Build Include="dbo\Stored Procedures\spRemoveInventory.sql" />
     <Build Include="dbo\Stored Procedures\spProductRemove.sql" />
-    <Build Include="spSaleRemove.sql" />
     <Build Include="dbo\Stored Procedures\spSalesDetailsLookUp.sql" />
+    <Build Include="dbo\Stored Procedures\spSaleRemove.sql" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="NK-Data.refactorlog" />

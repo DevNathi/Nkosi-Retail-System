@@ -1,5 +1,6 @@
 ﻿using Caliburn.Micro;
 using NK_DesktopUI.Helpers;
+using NK_DesktopUI_Library.Api;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -96,6 +97,9 @@ namespace NK_DesktopUI.ViewModels
             {
                 ErrorMessage = "";
                 var result = await _apiHelper.Authenticate(UserName, Password);
+
+                //User infor from a Loggedinuser 
+                await _apiHelper.GetLoggedInUserInfor(result.Access_Token);
             }
             catch (Exception ex)
             {
