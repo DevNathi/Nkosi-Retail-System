@@ -1,5 +1,4 @@
-﻿using NK_DesktopUI_Library;
-using NK_DesktopUI_Library.Models;
+﻿using NK_DesktopUI_Library.Models;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -75,6 +74,7 @@ namespace NK_DesktopUI_Library.Api
                     _loggedInUserModel.LastName = result.LastName;
                     _loggedInUserModel.EmailAddress = result.EmailAddress;
                     _loggedInUserModel.CreateDate = result.CreateDate;
+                   
 
                 }
                 else

@@ -34,11 +34,11 @@ namespace NK_DesktopUI
             _container
                 .Singleton<IWindowManager, WindowManager>()
                 .Singleton<IEventAggregator, EventAggregator>()
-                .Singleton<LoggedInUserModel>()
+                .Singleton<ILoggedInUserModel, LoggedInUserModel>()
                 .Singleton<IAPIHelper, APIHelper>();
                 
 
-            //This is where we specify how we select our Types of Instances
+            //This is where we specify how we select our Types of Instances for views in the shell
             GetType().Assembly.GetTypes()
                 .Where(type => type.IsClass)
                 .Where(type => type.Name.EndsWith("ViewModel"))

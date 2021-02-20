@@ -57,7 +57,7 @@
 
         <DockPanel Grid.Row="4" Grid.Column="2">
             <TextBlock Text="Tax:  "/>
-            <TextBlock x:Name="Tax" Text="R0.00" TextAlignment="Right"/>
+            <TextBlock x:Name="Tax" Text="15%" TextAlignment="Right"/>
         </DockPanel>
 
         <DockPanel Grid.Row="5" Grid.Column="2">

@@ -8,6 +8,6 @@
 
 AS
 BEGIN
-	INSERT INTO Sale ([CashierId],[SaleDate],[Subtotal],[Tax],[Total])
+	INSERT INTO dbo.Sale ([CashierId],[SaleDate],[Subtotal],[Tax],[Total])
 	VALUES(@CashierId,@SaleDate,@Subtotal,@Tax,@Total)
 END

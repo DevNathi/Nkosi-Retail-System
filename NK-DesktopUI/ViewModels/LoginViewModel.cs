@@ -1,4 +1,5 @@
 ﻿using Caliburn.Micro;
+using NK_DesktopUI.EventModels;
 using NK_DesktopUI.Helpers;
 using NK_DesktopUI_Library.Api;
 using System;
@@ -14,10 +15,12 @@ namespace NK_DesktopUI.ViewModels
         private string _useName;
         private string _password;
         private IAPIHelper _apiHelper;
+        private IEventAggregator _events;
 
-        public LoginViewModel(IAPIHelper apiHelper)
+        public LoginViewModel(IAPIHelper apiHelper, IEventAggregator events)
         {
             _apiHelper = apiHelper;
+            _events = events;
         }
 
         public string UserName
@@ -97,9 +100,10 @@ namespace NK_DesktopUI.ViewModels
             {
                 ErrorMessage = "";
                 var result = await _apiHelper.Authenticate(UserName, Password);
-
                 //User infor from a Loggedinuser 
                 await _apiHelper.GetLoggedInUserInfor(result.Access_Token);
+
+                _events.PublishOnUIThread(new LogOnEvent());
             }
             catch (Exception ex)
             {
