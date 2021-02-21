@@ -41,10 +41,23 @@ namespace NK_DesktopUI.ViewModels
                 NotifyOfPropertyChange(() => Products);
             }
         }
+        private ProductsModel _selectedProduct;
 
-        private BindingList<ProductsModel> _cart;
+        public ProductsModel SelectedProduct
+        {
+            get { return _selectedProduct; }
+            set 
+            {
+                _selectedProduct = value;
+                NotifyOfPropertyChange(() => SelectedProduct);
+                NotifyOfPropertyChange(() => CanAddToCart);
+            }
+        }
 
-        public BindingList<ProductsModel> Cart
+
+        private BindingList<CartItemModel> _cart = new BindingList<CartItemModel>();
+
+        public BindingList<CartItemModel> Cart
         {
             get { return _cart; }
             set
@@ -53,7 +66,7 @@ namespace NK_DesktopUI.ViewModels
                 NotifyOfPropertyChange(() => Cart);
             }
         }
-        private int _itemQuality;
+        private int _itemQuality = 1;
 
         public int ItemQuality
         {
@@ -62,6 +75,8 @@ namespace NK_DesktopUI.ViewModels
             {
                 _itemQuality = value;
                 NotifyOfPropertyChange(() => ItemQuality);
+                NotifyOfPropertyChange(() => CanAddToCart);
+
             }
         }
 
@@ -80,7 +95,12 @@ namespace NK_DesktopUI.ViewModels
             get
             {
                 //TODO - Replace with calculation for subtotal
-                return "R0.00";
+                decimal subTotal = 0;
+                foreach (var item in Cart)
+                {
+                    subTotal += (item.Product.RetailPrice * item.QauntityInCart);
+                }
+                return subTotal.ToString("C");
             }
 
         }
@@ -104,11 +124,49 @@ namespace NK_DesktopUI.ViewModels
 
                 //Make sure something is selected
                 //Makre sure there is an item quality
+                if(SelectedProduct?.QuantityInStock >= ItemQuality)
+                {
+                    if(ItemQuality > 0)
+                    {
+                        output = true;
+                    }
+                    
+                }
+                else
+                {
+                     output = false;
+                }
                 return output;
             }
         }
         public void AddToCart()
         {
+            CartItemModel existingaItem = Cart.FirstOrDefault(x => x.Product == SelectedProduct);
+
+            if(existingaItem != null)
+            {
+                existingaItem.QauntityInCart += ItemQuality;
+                
+                //Hack - Should add a better way to refresh the cart display
+                Cart.Remove(existingaItem);
+                Cart.Add(existingaItem); 
+            }
+            else
+            {
+                CartItemModel Item = new CartItemModel
+                {
+                    Product = SelectedProduct,
+                    QauntityInCart = ItemQuality
+                };
+                Cart.Add(Item);
+               
+            }
+            
+            SelectedProduct.QuantityInStock -= ItemQuality;
+            ItemQuality = 1;
+            NotifyOfPropertyChange(() => SubTotal);
+          
+
 
         }
         public bool CanRemoveFromCart
@@ -124,6 +182,7 @@ namespace NK_DesktopUI.ViewModels
         public void RemoveFromCart()
         {
 
+            NotifyOfPropertyChange(() => SubTotal);
         }
         public bool CanCheckOut
         {
