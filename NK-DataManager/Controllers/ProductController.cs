@@ -9,6 +9,7 @@ using System.Web.Mvc;
 
 namespace NK_DataManager.Controllers
 {
+    //[System.Web.Http.Authorize]
     public class ProductController : ApiController
     {
         

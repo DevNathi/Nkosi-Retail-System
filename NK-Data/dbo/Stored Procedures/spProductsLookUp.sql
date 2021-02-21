@@ -2,6 +2,10 @@
 	
 AS
 BEGIN
-	SELECT *
+	set nocount on;
+
+	SELECT Id, ProductName,[Description], RetailPrice, QuantityInStock
 	FROM [dbo].[Product]
+
+	Order By ProductName;
 END
