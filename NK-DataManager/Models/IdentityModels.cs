@@ -20,8 +20,9 @@ namespace NK_DataManager.Models
 
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
+        //Connection string to the AspNet Framework Database schema
         public ApplicationDbContext()
-            : base("DefaultConnection", throwIfV1Schema: false)
+            : base("EF_NK-DbConnection", throwIfV1Schema: false)
         {
         }
         
