@@ -1,5 +1,6 @@
 ﻿using Caliburn.Micro;
 using NK_DesktopUI_Library.Api;
+using NK_DesktopUI_Library.Helpers;
 using NK_DesktopUI_Library.Models;
 using System;
 using System.Collections.Generic;
@@ -13,10 +14,12 @@ namespace NK_DesktopUI.ViewModels
     public class SalesViewModel : Screen
     {
         IProductEndpoint _productEndpoint;
+        IConfigHelper _configHelper;
 
-        public SalesViewModel(IProductEndpoint productEndpoint)
+        public SalesViewModel(IProductEndpoint productEndpoint, IConfigHelper configHelper)
         {
             _productEndpoint = productEndpoint;
+            _configHelper = configHelper;
            
         }
         protected override async void OnViewLoaded(object view)
@@ -31,7 +34,6 @@ namespace NK_DesktopUI.ViewModels
         }
 
         private BindingList<ProductsModel> _products;
-
         public BindingList<ProductsModel> Products
         {
             get { return _products; }
@@ -41,8 +43,8 @@ namespace NK_DesktopUI.ViewModels
                 NotifyOfPropertyChange(() => Products);
             }
         }
-        private ProductsModel _selectedProduct;
 
+        private ProductsModel _selectedProduct;
         public ProductsModel SelectedProduct
         {
             get { return _selectedProduct; }
@@ -54,9 +56,7 @@ namespace NK_DesktopUI.ViewModels
             }
         }
 
-
         private BindingList<CartItemModel> _cart = new BindingList<CartItemModel>();
-
         public BindingList<CartItemModel> Cart
         {
             get { return _cart; }
@@ -66,8 +66,8 @@ namespace NK_DesktopUI.ViewModels
                 NotifyOfPropertyChange(() => Cart);
             }
         }
-        private int _itemQuality = 1;
 
+        private int _itemQuality = 1;
         public int ItemQuality
         {
             get { return _itemQuality; }
@@ -80,37 +80,55 @@ namespace NK_DesktopUI.ViewModels
             }
         }
 
+
         public string Tax
         {
             get
             {
                 //TODO - Replace with calculation for subtotal
-                return "15%";
+              //TODO - fix notify of prop change in TAX
+                return CalculateTax().ToString("C");
             }
 
         }
-
+        private decimal CalculateTax()
+        {
+            decimal taxAmount = 0;
+            decimal taxRate = _configHelper.GetTaxRate();
+            foreach (var item in Cart)
+            {
+                if (item.Product.IsTaxable)
+                {
+                    taxAmount += (item.Product.RetailPrice * item.QauntityInCart * taxRate);
+                }
+            }
+            return taxAmount;
+        }
         public string SubTotal
         {
             get
             {
                 //TODO - Replace with calculation for subtotal
-                decimal subTotal = 0;
-                foreach (var item in Cart)
-                {
-                    subTotal += (item.Product.RetailPrice * item.QauntityInCart);
-                }
-                return subTotal.ToString("C");
+                return CalculateSubTotal().ToString("C");
             }
 
         }
-
+        private decimal CalculateSubTotal()
+        {
+            decimal subTotal = 0;
+            foreach (var item in Cart)
+            {
+                subTotal += (item.Product.RetailPrice * item.QauntityInCart);
+            }
+            return subTotal;
+        }
         public string Total
         {
             get
             {
                 //TODO - Replace with calculation for subtotal
-                return "R0.00";
+                decimal total = CalculateSubTotal() + CalculateTax();
+                return total.ToString("C");
             }
 
         }
@@ -164,8 +182,11 @@ namespace NK_DesktopUI.ViewModels
             
             SelectedProduct.QuantityInStock -= ItemQuality;
             ItemQuality = 1;
+
             NotifyOfPropertyChange(() => SubTotal);
-          
+            NotifyOfPropertyChange(() => Tax);
+            NotifyOfPropertyChange(() => Total);
+
 
 
         }
@@ -183,6 +204,8 @@ namespace NK_DesktopUI.ViewModels
         {
 
             NotifyOfPropertyChange(() => SubTotal);
+            NotifyOfPropertyChange(() => Tax);
+            NotifyOfPropertyChange(() => Total);
         }
         public bool CanCheckOut
         {

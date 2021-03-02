@@ -13,5 +13,6 @@ namespace NK_DesktopUI_Library.Models
         public decimal RetailPrice { get; set; }
         public string Description { get; set; }
         public int QuantityInStock { get; set; }
+        public bool IsTaxable { get; set; }
     }
 }

@@ -2,6 +2,7 @@
 using NK_DesktopUI.Helpers;
 using NK_DesktopUI.ViewModels;
 using NK_DesktopUI_Library.Api;
+using NK_DesktopUI_Library.Helpers;
 using NK_DesktopUI_Library.Models;
 using System;
 using System.Collections.Generic;
@@ -36,6 +37,7 @@ namespace NK_DesktopUI
                 .Singleton<IWindowManager, WindowManager>()
                 .Singleton<IEventAggregator, EventAggregator>()
                 .Singleton<ILoggedInUserModel, LoggedInUserModel>()
+                .Singleton<IConfigHelper, ConfigHelper>()
                 .Singleton<IAPIHelper, APIHelper>();
                 
 
