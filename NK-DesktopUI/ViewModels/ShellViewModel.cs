@@ -12,20 +12,17 @@ namespace NK_DesktopUI.ViewModels
     {
         private IEventAggregator _events;
         private SalesViewModel _salesVM;
-        private SimpleContainer _simpleContainer;
 
-       public ShellViewModel(IEventAggregator events, SalesViewModel salesVM,
-           SimpleContainer container)
+       public ShellViewModel(IEventAggregator events, SalesViewModel salesVM)
         {
             //handles the event for all the viewmodels 
             _events = events;
             _salesVM = salesVM;
-            _simpleContainer = container;
 
             _events.Subscribe(this);
 
             // opens up the LoginVM at start up
-            ActivateItem(_simpleContainer.GetInstance<LoginViewModel>());
+            ActivateItem(IoC.Get<LoginViewModel>());
         }
 
         public void Handle(LogOnEvent message)
