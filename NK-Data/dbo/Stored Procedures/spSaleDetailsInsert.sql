@@ -7,6 +7,6 @@
 	@Tax NVARCHAR = '' 
 AS
 BEGIN
-	INSERT INTO SalesDetail ([UserId],[ProductId],[Quantity],[PurchasePrice],[Tax])
+	INSERT INTO SalesDetail (SaleId,[ProductId],[Quantity],[PurchasePrice],[Tax])
 	VALUES (@UserId,@ProductId,@Quantity,@PurchasePrice,@Tax)
 END

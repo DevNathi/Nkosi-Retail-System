@@ -3,7 +3,7 @@
 	
 AS
 BEGIN
-	SELECT [Id],[UserId],[ProductId],[Quantity],[PurchasePrice],[Tax]
+	SELECT [Id],SaleId,[ProductId],[Quantity],[PurchasePrice],[Tax]
 	FROM [dbo].[SalesDetail]
 	WHERE [Id] = @Id
 END
