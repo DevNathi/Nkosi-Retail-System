@@ -80,30 +80,6 @@ namespace NK_DesktopUI.ViewModels
             }
         }
 
-
-        public string Tax
-        {
-            get
-            {
-                //TODO - Replace with calculation for subtotal
-              //TODO - fix notify of prop change in TAX
-                return CalculateTax().ToString("C");
-            }
-
-        }
-        private decimal CalculateTax()
-        {
-            decimal taxAmount = 0;
-            decimal taxRate = _configHelper.GetTaxRate();
-            foreach (var item in Cart)
-            {
-                if (item.Product.IsTaxable)
-                {
-                    taxAmount += (item.Product.RetailPrice * item.QauntityInCart * taxRate);
-                }
-            }
-            return taxAmount;
-        }
         public string SubTotal
         {
             get
@@ -122,6 +98,32 @@ namespace NK_DesktopUI.ViewModels
             }
             return subTotal;
         }
+        public string Tax
+        {
+            get
+            {
+                //TODO - Replace with calculation for subtotal
+              //TODO - fix notify of prop change in TAX
+                return CalculateTax().ToString("C");
+            }
+
+        }
+        private decimal CalculateTax()
+        {
+            decimal taxAmount = 0;
+            decimal taxRate = _configHelper.GetTaxRate()/100;
+
+            Cart.Where(x => x.Product.IsTaxable)
+                .Sum(x => x.Product.RetailPrice * x.QauntityInCart * taxRate);
+            //foreach (var item in Cart)
+            //{
+            //    if (item.Product.IsTaxable)
+            //    {
+            //        taxAmount += (item.Product.RetailPrice * item.QauntityInCart * taxRate);
+            //    }
+            //}
+            return taxAmount;
+        }
         public string Total
         {
             get
@@ -132,8 +134,6 @@ namespace NK_DesktopUI.ViewModels
             }
 
         }
-
-
         public bool CanAddToCart
         {
             get
