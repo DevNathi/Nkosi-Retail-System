@@ -1,4 +1,6 @@
-﻿using Caliburn.Micro;
+﻿using AutoMapper;
+using Caliburn.Micro;
+using NK_DesktopUI.Models;
 using NK_DesktopUI_Library.Api;
 using NK_DesktopUI_Library.Helpers;
 using NK_DesktopUI_Library.Models;
@@ -16,12 +18,15 @@ namespace NK_DesktopUI.ViewModels
         IProductEndpoint _productEndpoint;
         ISaleEndpoint _saleEndpoint;
         IConfigHelper _configHelper;
+        IMapper _mapper;
 
-        public SalesViewModel(IProductEndpoint productEndpoint, IConfigHelper configHelper, ISaleEndpoint saleEndpoint)
+        public SalesViewModel(IProductEndpoint productEndpoint, IConfigHelper configHelper, 
+            ISaleEndpoint saleEndpoint, IMapper mapper)
         {
             _productEndpoint = productEndpoint;
             _saleEndpoint = saleEndpoint;
             _configHelper = configHelper;
+            _mapper = mapper;
            
         }
         protected override async void OnViewLoaded(object view)
@@ -32,11 +37,12 @@ namespace NK_DesktopUI.ViewModels
         private async Task LoadProducts()
         {
             var productList = await _productEndpoint.GetAllProducts();
-            Products = new BindingList<ProductsModel>(productList);
+            var products = _mapper.Map<List<ProductDisplayModel>>(productList);
+            Products = new BindingList<ProductDisplayModel>(products);
         }
 
-        private BindingList<ProductsModel> _products;
-        public BindingList<ProductsModel> Products
+        private BindingList<ProductDisplayModel> _products;
+        public BindingList<ProductDisplayModel> Products
         {
             get { return _products; }
             set
@@ -46,8 +52,8 @@ namespace NK_DesktopUI.ViewModels
             }
         }
 
-        private ProductsModel _selectedProduct;
-        public ProductsModel SelectedProduct
+        private ProductDisplayModel _selectedProduct;
+        public ProductDisplayModel SelectedProduct
         {
             get { return _selectedProduct; }
             set 
@@ -57,9 +63,20 @@ namespace NK_DesktopUI.ViewModels
                 NotifyOfPropertyChange(() => CanAddToCart);
             }
         }
+        private CartItemDisplayModel _selectedCartItem;
+        public CartItemDisplayModel SelectedCartItem
+        {
+            get { return _selectedCartItem; }
+            set
+            {
+                _selectedCartItem = value;
+                NotifyOfPropertyChange(() => SelectedCartItem);
+                NotifyOfPropertyChange(() => CanRemoveFromCart);
+            }
+        }
 
-        private BindingList<CartItemModel> _cart = new BindingList<CartItemModel>();
-        public BindingList<CartItemModel> Cart
+        private BindingList<CartItemDisplayModel> _cart = new BindingList<CartItemDisplayModel>();
+        public BindingList<CartItemDisplayModel> Cart
         {
             get { return _cart; }
             set
@@ -162,19 +179,15 @@ namespace NK_DesktopUI.ViewModels
         }
         public void AddToCart()
         {
-            CartItemModel existingaItem = Cart.FirstOrDefault(x => x.Product == SelectedProduct);
+            CartItemDisplayModel existingaItem = Cart.FirstOrDefault(x => x.Product == SelectedProduct);
 
             if(existingaItem != null)
             {
-                existingaItem.QauntityInCart += ItemQuantity;
-                
-                //Hack - Should add a better way to refresh the cart display
-                Cart.Remove(existingaItem);
-                Cart.Add(existingaItem); 
+                existingaItem.QauntityInCart += ItemQuantity; 
             }
             else
             {
-                CartItemModel Item = new CartItemModel
+                CartItemDisplayModel Item = new CartItemDisplayModel
                 {
                     Product = SelectedProduct,
                     QauntityInCart = ItemQuantity
@@ -201,16 +214,29 @@ namespace NK_DesktopUI.ViewModels
                 bool output = false;
 
                 //Make sure something is selected
+                if(SelectedCartItem !=null && SelectedCartItem?.QauntityInCart > 0)
+                {
+                    output = true;
+                }
                 return output;
             }
         }
         public void RemoveFromCart()
         {
-
+            SelectedCartItem.Product.QuantityInStock += 1;
+            if(SelectedCartItem.QauntityInCart > 1)
+            {
+                SelectedCartItem.QauntityInCart -= 1;
+            }
+            else
+            {
+                Cart.Remove(SelectedCartItem);
+            }
             NotifyOfPropertyChange(() => SubTotal);
             NotifyOfPropertyChange(() => Tax);
             NotifyOfPropertyChange(() => Total);
             NotifyOfPropertyChange(() => CanCheckOut);
+            NotifyOfPropertyChange(() => CanAddToCart);
         }
         public bool CanCheckOut
         {

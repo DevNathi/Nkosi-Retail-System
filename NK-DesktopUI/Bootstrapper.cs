@@ -1,5 +1,7 @@
-﻿using Caliburn.Micro;
+﻿using AutoMapper;
+using Caliburn.Micro;
 using NK_DesktopUI.Helpers;
+using NK_DesktopUI.Models;
 using NK_DesktopUI.ViewModels;
 using NK_DesktopUI_Library.Api;
 using NK_DesktopUI_Library.Helpers;
@@ -28,8 +30,24 @@ namespace NK_DesktopUI
            "PasswordChanged");
         }
 
+        private IMapper ConfigAutoMapper()
+        {
+            var config = new MapperConfiguration(cfg =>
+            {
+                cfg.CreateMap<ProductsModel, ProductDisplayModel>();
+                cfg.CreateMap<CartItemModel, CartItemDisplayModel>();
+            });
+
+            var output = config.CreateMapper();
+
+            return output;
+        }
+
         protected override void Configure()
         {
+
+            _container.Instance(ConfigAutoMapper());
+
             _container.Instance(_container)
                 .PerRequest<IProductEndpoint, ProductEndpoint>()
                 .PerRequest<ISaleEndpoint, SaleEndpoint>();
