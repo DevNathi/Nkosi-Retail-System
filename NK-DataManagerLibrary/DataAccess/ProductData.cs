@@ -10,12 +10,11 @@ namespace NK_DataManagerLibrary.DataAccess
 {
     public class ProductData
     {
-        public List<ProductModel> GetProductById(int Id)
+        public ProductModel GetProductById(int productId)
         {
-            var p = new { Id = Id };
 
             SqlDataAccess sql = new SqlDataAccess();
-            var output = sql.LoadData<ProductModel, dynamic>("dbo.spProductLookUp", p, "NK-DbConnection");
+            var output = sql.LoadData<ProductModel, dynamic>("dbo.spProductLookUp", new { Id = productId }, "NK-DbConnection").FirstOrDefault();
             return output;
         }
         

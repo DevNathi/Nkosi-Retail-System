@@ -79,7 +79,7 @@
     <Build Include="dbo\Stored Procedures\spProductInsert.sql" />
     <Build Include="dbo\Stored Procedures\spInventoryInsert.sql" />
     <Build Include="dbo\Stored Procedures\spInventoryLookUp.sql" />
-    <Build Include="dbo\Stored Procedures\spSaleLookUp.sql" />
+    <Build Include="dbo\Stored Procedures\spSale_LookUp.sql" />
     <Build Include="dbo\Stored Procedures\spSaleDetailsLookUp.sql" />
     <Build Include="dbo\Stored Procedures\spProductsLookUp.sql" />
     <Build Include="dbo\Stored Procedures\spSalesLookUp.sql" />
@@ -89,6 +89,8 @@
     <Build Include="dbo\Stored Procedures\spProductRemove.sql" />
     <Build Include="dbo\Stored Procedures\spSalesDetailsLookUp.sql" />
     <Build Include="dbo\Stored Procedures\spSaleRemove.sql" />
+    <Build Include="dbo\Stored Procedures\spSale_Insert.sql" />
+    <Build Include="dbo\Stored Procedures\spSaleDetail_Insert.sql" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="NK-Data.refactorlog" />

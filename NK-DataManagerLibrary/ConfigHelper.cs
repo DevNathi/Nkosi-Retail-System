@@ -5,17 +5,20 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace NK_DesktopUI_Library.Helpers
+namespace NK_DataManagerLibrary
 {
-    public class ConfigHelper : IConfigHelper
+    public class ConfigHelper 
     {
-        public decimal GetTaxRate()
+        public static decimal GetTaxRate()
         {
             bool IsValidTaxRate = true;
             string rateText = ConfigurationManager.AppSettings["taxRate"];
 
 
-            IsValidTaxRate = decimal.TryParse(rateText,out decimal output);
+            IsValidTaxRate = Decimal.TryParse(rateText, out decimal output);
+
+
+
 
             if (IsValidTaxRate == false)
             {

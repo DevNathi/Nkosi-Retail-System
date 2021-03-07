@@ -14,11 +14,13 @@ namespace NK_DesktopUI.ViewModels
     public class SalesViewModel : Screen
     {
         IProductEndpoint _productEndpoint;
+        ISaleEndpoint _saleEndpoint;
         IConfigHelper _configHelper;
 
-        public SalesViewModel(IProductEndpoint productEndpoint, IConfigHelper configHelper)
+        public SalesViewModel(IProductEndpoint productEndpoint, IConfigHelper configHelper, ISaleEndpoint saleEndpoint)
         {
             _productEndpoint = productEndpoint;
+            _saleEndpoint = saleEndpoint;
             _configHelper = configHelper;
            
         }
@@ -67,14 +69,14 @@ namespace NK_DesktopUI.ViewModels
             }
         }
 
-        private int _itemQuality = 1;
-        public int ItemQuality
+        private int _itemQuantity = 1;
+        public int ItemQuantity
         {
-            get { return _itemQuality; }
+            get { return _itemQuantity; }
             set
             {
-                _itemQuality = value;
-                NotifyOfPropertyChange(() => ItemQuality);
+                _itemQuantity = value;
+                NotifyOfPropertyChange(() => ItemQuantity);
                 NotifyOfPropertyChange(() => CanAddToCart);
 
             }
@@ -111,17 +113,18 @@ namespace NK_DesktopUI.ViewModels
         private decimal CalculateTax()
         {
             decimal taxAmount = 0;
-            decimal taxRate = _configHelper.GetTaxRate()/100;
+            decimal taxRate = _configHelper.GetTaxRate();
 
-            Cart.Where(x => x.Product.IsTaxable)
-                .Sum(x => x.Product.RetailPrice * x.QauntityInCart * taxRate);
-            //foreach (var item in Cart)
-            //{
-            //    if (item.Product.IsTaxable)
-            //    {
-            //        taxAmount += (item.Product.RetailPrice * item.QauntityInCart * taxRate);
-            //    }
-            //}
+            //TODO - come back to sinplify this
+            //Cart.Where(x => x.Product.isTaxable)
+            //    .Sum(x => x.Product.RetailPrice * x.QauntityInCart * taxRate);
+            foreach (var item in Cart)
+            {
+                if (item.Product.isTaxable)
+                {
+                    taxAmount += (item.Product.RetailPrice * item.QauntityInCart * taxRate);
+                }
+            }
             return taxAmount;
         }
         public string Total
@@ -142,9 +145,9 @@ namespace NK_DesktopUI.ViewModels
 
                 //Make sure something is selected
                 //Makre sure there is an item quality
-                if(SelectedProduct?.QuantityInStock >= ItemQuality)
+                if(SelectedProduct?.QuantityInStock >= ItemQuantity)
                 {
-                    if(ItemQuality > 0)
+                    if(ItemQuantity > 0)
                     {
                         output = true;
                     }
@@ -163,7 +166,7 @@ namespace NK_DesktopUI.ViewModels
 
             if(existingaItem != null)
             {
-                existingaItem.QauntityInCart += ItemQuality;
+                existingaItem.QauntityInCart += ItemQuantity;
                 
                 //Hack - Should add a better way to refresh the cart display
                 Cart.Remove(existingaItem);
@@ -174,18 +177,19 @@ namespace NK_DesktopUI.ViewModels
                 CartItemModel Item = new CartItemModel
                 {
                     Product = SelectedProduct,
-                    QauntityInCart = ItemQuality
+                    QauntityInCart = ItemQuantity
                 };
                 Cart.Add(Item);
                
             }
             
-            SelectedProduct.QuantityInStock -= ItemQuality;
-            ItemQuality = 1;
+            SelectedProduct.QuantityInStock -= ItemQuantity;
+            ItemQuantity = 1;
 
             NotifyOfPropertyChange(() => SubTotal);
             NotifyOfPropertyChange(() => Tax);
             NotifyOfPropertyChange(() => Total);
+            NotifyOfPropertyChange(() => CanCheckOut);
 
 
 
@@ -206,6 +210,7 @@ namespace NK_DesktopUI.ViewModels
             NotifyOfPropertyChange(() => SubTotal);
             NotifyOfPropertyChange(() => Tax);
             NotifyOfPropertyChange(() => Total);
+            NotifyOfPropertyChange(() => CanCheckOut);
         }
         public bool CanCheckOut
         {
@@ -214,12 +219,28 @@ namespace NK_DesktopUI.ViewModels
                 bool output = false;
 
                 //Make sure there something in the shopping cart
+                if(Cart.Count > 0 )
+                {
+                    output = true;
+                }
+
                 return output;
             }
         }
-        public void CheckOut()
+        public async Task CheckOut()
         {
-
+            //TODO - Create sale and post it to API
+            SaleModel sale = new SaleModel();
+            foreach (var item in Cart)
+            {
+                sale.SaleDetails.AddLast(new SaleDetailModel
+                {
+                    ProductId =  item.Product.Id,
+                    Quantity = item.QauntityInCart
+                
+                });
+                await _saleEndpoint.PostSale(sale);
+            }
         }
 
     }

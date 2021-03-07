@@ -16,7 +16,7 @@ namespace NK_DataManager.Controllers
         public ProductModel GetById(int id)
         {
             ProductData product = new ProductData();
-            return product.GetProductById(id).First();
+            return product.GetProductById(id);
         }
 
         public List<ProductModel> GetAll()

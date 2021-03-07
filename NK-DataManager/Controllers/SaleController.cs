@@ -1,4 +1,7 @@
-﻿using NK_DataManagerLibrary.DataAccess;
+﻿
+using Microsoft.AspNet.Identity;
+using NK_DataManager.Models;
+using NK_DataManagerLibrary.DataAccess;
 using NK_DataManagerLibrary.Models;
 using System;
 using System.Collections.Generic;
@@ -11,32 +14,16 @@ namespace NK_DataManager.Controllers
 {
     public class SaleController : ApiController
     {
-        // GET: Sale
-        
-           
-            public SaleModel GetById(int id)
+            public void Post(SaleModel sale)
             {
-                SaleData sale = new SaleData();
-                return sale.GetSaleById(id).First();
+
+            SaleData data = new SaleData();
+            string userId = RequestContext.Principal.Identity.GetUserId();
+
+            data.SaveSale(sale, userId);
+            
+
             }
 
-            public List<SaleModel> GetAll()
-            {
-                SaleData sale = new SaleData();
-
-                return sale.GetAllSales();
-            }
-
-            public void PostProduct(MiniSaleModel model)
-            {
-                SaleData sale = new SaleData();
-                sale.PostSale(model);
-            }
-
-            public void DeleteProduct(int id)
-            {
-                SaleData sale = new SaleData();
-                sale.DeleteSale(id);
-            }
      }
 }

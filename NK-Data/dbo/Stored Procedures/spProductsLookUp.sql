@@ -4,7 +4,7 @@ AS
 BEGIN
 	set nocount on;
 
-	SELECT Id, ProductName,[Description], RetailPrice, QuantityInStock, isTaxble
+	SELECT Id, ProductName,[Description], RetailPrice, QuantityInStock, isTaxable
 	FROM [dbo].[Product]
 
 	Order By ProductName;

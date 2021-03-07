@@ -5,8 +5,9 @@ using System.Web;
 
 namespace NK_DataManagerLibrary.Models
 {
-    public class SaleModel
+    public class SaleDetailModel
     {
-        public LinkedList<SaleDetailModel> SaleDetails { get; set; }
+        public int ProductId { get; set; }
+        public int Quantity { get; set; }
     }
 }

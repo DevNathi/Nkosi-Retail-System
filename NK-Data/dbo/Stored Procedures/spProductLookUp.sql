@@ -1,11 +1,13 @@
 ﻿CREATE PROCEDURE [dbo].[spProductLookUp]
-	@Id int = 0
+	@Id int 
 
 AS
 	
 BEGIN 
 
-	SELECT [Id],[ProductName],[RetailPrice],[Description],[CreateDate],[LastModified]
+	set nocount on;
+
+	SELECT [Id],[ProductName],[RetailPrice],[Description],[QuantityInStock],[isTaxable]
 	FROM [dbo].[Product]
-	WHERE Id = @Id
+	WHERE Id = @Id;
 END

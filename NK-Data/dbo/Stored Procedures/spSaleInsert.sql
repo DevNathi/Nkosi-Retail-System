@@ -1,4 +1,4 @@
-﻿CREATE PROCEDURE [dbo].[spSaleInsert]
+﻿Create PROCEDURE [dbo].[spSaleInsert]
 	
 	@CashierId NVARCHAR (128) = '',
 	@SaleDate DATETIME2 (7),
