@@ -63,6 +63,10 @@ namespace NK_DesktopUI_Library.Api
 
             }
         }
+        public void LogOffUser()
+        {
+            _apiClient.DefaultRequestHeaders.Clear();
+        }
 
         public async Task GetLoggedInUserInfor(string token)
         {

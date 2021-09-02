@@ -43,30 +43,41 @@ namespace NK_DataManagerLibrary.DataAccess
             }
             //Fill in the available information
             //Create the Sale model
+
             SaleDBModel sale = new SaleDBModel
             {
                 SubTotal = details.Sum(x => x.PurchasePrice),
                 Tax = details.Sum(x => x.Tax),
                 CashierId = cashierId
             };
-            sale.Total = sale.SubTotal * sale.Tax;
+            sale.Total = sale.SubTotal + sale.Tax;
 
-            //Save the sale model
-            SqlDataAccess sql = new SqlDataAccess();
-
-            sql.Save("dbo.spSale_Insert", sale, "NK-DbConnection");
-
-            //Get Id from the sale model
-            sale.Id = sql.LoadData<int, dynamic>("dbo.spSale_LookUp", new { CashierId = sale.CashierId, sale.SaleDate }, "NK-DbConnection").FirstOrDefault();
-            //Finish filling in the sales detail model
-
-            foreach (var item in details)
+            using (SqlDataAccess sql = new SqlDataAccess())
             {
-                item.SaleId = sale.Id;
-                //Save the sale details models
-                sql.Save("dbo.spSaleDetail_Insert", item, "NK-DbConnection");
-            }
+                try
+                {
+                    //Save the sale model
+                    sql.StartTransaction("NK-DbConnection");
+                    sql.SaveDataTransaction("dbo.spSale_Insert", sale);
 
+                    //Get Id from the sale model
+                    sale.Id = sql.LoadDataTransaction<int, dynamic>("dbo.spSale_LookUp", new { CashierId = sale.CashierId, sale.SaleDate }).FirstOrDefault();
+                    //Finish filling in the sales detail model
+
+                    foreach (var item in details)
+                    {
+                        item.SaleId = sale.Id;
+                        //Save the sale details models
+                        sql.SaveDataTransaction("dbo.spSaleDetail_Insert", item);
+                    }
+                    sql.CommitTransation();
+                }
+                catch
+                {
+                    sql.RollBackTransaction();
+                    throw;
+                }
+            }
 
         }
     }

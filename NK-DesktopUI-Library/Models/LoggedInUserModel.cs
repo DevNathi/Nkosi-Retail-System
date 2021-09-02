@@ -19,7 +19,8 @@ namespace NK_DesktopUI_Library.Models
 
         public DateTime CreateDate { get; set; }
 
-        public void LogOffUser()
+        //This model clears the user information
+        public void ResetUserModel()
         {
             Token = "";
             AuthUserId = "";

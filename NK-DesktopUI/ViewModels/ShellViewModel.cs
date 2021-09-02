@@ -1,10 +1,11 @@
-﻿using System;
+﻿    using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Caliburn.Micro;
 using NK_DesktopUI.EventModels;
+using NK_DesktopUI_Library.Api;
 using NK_DesktopUI_Library.Models;
 
 namespace NK_DesktopUI.ViewModels
@@ -14,13 +15,15 @@ namespace NK_DesktopUI.ViewModels
         private IEventAggregator _events;
         private SalesViewModel _salesVM;
         ILoggedInUserModel _user;
+        IAPIHelper _apiHelper;
 
-       public ShellViewModel(IEventAggregator events, SalesViewModel salesVM, ILoggedInUserModel user)
+       public ShellViewModel(IEventAggregator events, SalesViewModel salesVM, ILoggedInUserModel user, IAPIHelper apiHelper)
         {
             //handles the event for all the viewmodels 
             _events = events;
             _salesVM = salesVM;
-            _user = user;   
+            _user = user;
+            _apiHelper = apiHelper;
 
             _events.Subscribe(this);
 
@@ -49,7 +52,8 @@ namespace NK_DesktopUI.ViewModels
         }
         public void LogOut()
         {
-            _user.LogOffUser();
+            _user.ResetUserModel();
+            _apiHelper.LogOffUser();
             // opens up the LoginVM at start up
             ActivateItem(IoC.Get<LoginViewModel>());
             NotifyOfPropertyChange(() => IsLoggedIn);

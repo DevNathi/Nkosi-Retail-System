@@ -15,6 +15,6 @@ namespace NK_DesktopUI_Library.Models
 
         public DateTime CreateDate { get; set; }
 
-        void LogOffUser();
+        void ResetUserModel();
     }
 }

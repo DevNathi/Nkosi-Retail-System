@@ -10,6 +10,6 @@ namespace NK_DesktopUI_Library.Api
         Task<AuthenticatedUser> Authenticate(string username, string password);
         Task GetLoggedInUserInfor(string token);
 
-        
+        void LogOffUser();
     }
 }
