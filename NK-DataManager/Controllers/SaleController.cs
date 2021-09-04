@@ -15,6 +15,7 @@ namespace NK_DataManager.Controllers
     [Authorize]
     public class SaleController : ApiController
     {
+        [Authorize(Roles = "Cashier")]
         public void Post(SaleModel sale)
         {
 
@@ -24,6 +25,8 @@ namespace NK_DataManager.Controllers
             data.SaveSale(sale, userId);
 
         }
+
+        [Authorize(Roles = "Manager,Admin")]
         [Route("GetSalesReport")]
         public List<SaleReportModel> GetSalesReport()
         {
