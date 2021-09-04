@@ -10,28 +10,18 @@ namespace NK_DataManagerLibrary.DataAccess
 {
     public class InventoryData
     {
-        public List<InventoryModel> GetInventorytById(int Id)
+        public List<InventoryModel> GetInventory()
         {
-            var p = new { Id = Id };
-
             SqlDataAccess sql = new SqlDataAccess();
-            var output = sql.LoadData<InventoryModel, dynamic>("dbo.spInventoryLookUp", p, "NK-DbConnection");
+
+            var output = sql.LoadData<InventoryModel, dynamic>("spInventory_GetAll", new { }, "NK-DbConnection");
+
             return output;
         }
-
-        public List<InventoryModel> GetAllInventories()
+        public void saveInventoryRecord(InventoryModel item)
         {
             SqlDataAccess sql = new SqlDataAccess();
-
-            var output = sql.LoadData<InventoryModel, dynamic>("dbo.spInventoriesLookUp", new { }, "NK-DbConnection");
-            return output;
-        }
-
-        public void PostInventory(MiniInventoryModel inventory)
-        {
-
-            SqlDataAccess sql = new SqlDataAccess();
-            sql.Save<MiniInventoryModel>("dbo.spInventoryInsert", inventory, "NK-DbConnection");
+            sql.Save("spInventory_Insert", item, "NK-DbConnection");
 
         }
     }

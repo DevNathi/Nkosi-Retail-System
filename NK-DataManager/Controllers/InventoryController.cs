@@ -9,26 +9,19 @@ using System.Web.Mvc;
 
 namespace NK_DataManager.Controllers
 {
+    [Authorize]
     public class InventoryController : ApiController
     {
-        // GET: Inventory
-        public InventoryModel GetById(int id)
+        public List<InventoryModel> Get()
         {
-            InventoryData product = new InventoryData();
-            return product.GetInventorytById(id).First();
+            InventoryData data = new InventoryData();
+            return data.GetInventory();
         }
 
-        public List<InventoryModel> GetAll()
+        public void Post(InventoryModel item)
         {
-            InventoryData product = new InventoryData();
-
-            return product.GetAllInventories();
-        }
-
-        public void PostProduct(MiniInventoryModel model)
-        {
-            InventoryData product = new InventoryData();
-            product.PostInventory(model);
+            InventoryData data = new InventoryData();
+            data.saveInventoryRecord(item);
         }
     }
 }

@@ -49,6 +49,7 @@ namespace NK_DataManagerLibrary.DataAccess
                 SubTotal = details.Sum(x => x.PurchasePrice),
                 Tax = details.Sum(x => x.Tax),
                 CashierId = cashierId
+                
             };
             sale.Total = sale.SubTotal + sale.Tax;
 
@@ -79,6 +80,17 @@ namespace NK_DataManagerLibrary.DataAccess
                 }
             }
 
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public List<SaleReportModel> GetSaleReport()
+        {
+            SqlDataAccess sql = new SqlDataAccess();
+
+           var output = sql.LoadData<SaleReportModel, dynamic>("spSale_Report", new { }, "NK-DbConnection");
+            return output;
         }
     }
 }

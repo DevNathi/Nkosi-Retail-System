@@ -8,12 +8,11 @@ namespace NK_DataManagerLibrary.Models
 {
     public class InventoryModel
     {
-        public int Id { get; set; }
         public int ProductId { get; set; }
         public int Quantity { get; set; }
         //Money is the datatype for PurchasePrice
-        public string PurchasePrice { get; set; }
-        public DateTime PurchaDate { get; set; }
+        public decimal PurchasePrice { get; set; }
+        public DateTime PurchaseDate { get; set; } = DateTime.UtcNow;
     }
 
 
@@ -22,6 +21,6 @@ namespace NK_DataManagerLibrary.Models
         public int ProductId { get; set; }
         public int Quantity { get; set; }
         //Money is the datatype for PurchasePrice
-        public string PurchasePrice { get; set; }
+        public decimal PurchasePrice { get; set; }
     }
 }
